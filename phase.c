@@ -2,12 +2,19 @@
 #include <stdio.h>
 #include <string.h>
 
+// some simple colors, more here:
+// https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html
+// http://web.theurbanpenguin.com/adding-color-to-your-output-from-c/
+#define C_YELLOW (printf("\033[0;33m"))
+#define CB_BLUE  (printf("\033[1;34m"))
+#define C_RESET  (printf("\033[0m"))
+
+
 int main(int argc, char** argv) {
   int* cycle;
   int clen = 0;
   int illustrate = 0;
   int i, tmp, checksum;
-  int pad = 5;
   unsigned long step = 1;
 
   cycle = malloc(sizeof(int) * argc);
@@ -37,28 +44,34 @@ int main(int argc, char** argv) {
 
   while (1) {
     checksum = 0;
-    if (illustrate) {
-      printf("%0*lu ", pad, step); //TBD: dynamic padding
-    }
     for (i = 0; i < clen; i++) {
       checksum += ((step % cycle[i]));
       if (illustrate) {
-	printf("%s", (((step % cycle[i]) == 1 || cycle[i] == 1) ? ". " : "  "));
+	if (i == 0) putchar(' ');
+	CB_BLUE;
+	printf("%s", (((step % cycle[i]) == 1 || cycle[i] == 1) ? "^ " : "  "));
+	C_RESET;
       }
     }
     if (illustrate) {
-      printf("\n");
+      C_YELLOW;
+      printf("  %lu\n", step);
+      C_RESET;
     }
 
     // If it adds to 0, the cycles are back in phase, and we have a result 
     if (checksum == 0) {      
       if (illustrate) {
 	// extra step for illustration purposes, showing align
-	printf("%0*lu ", pad, step+1); //TBD: dynamic padding
 	for (i = 0; i < clen; i++) {
-	  printf("%s", ". ");
+	  if (i == 0) putchar(' ');
+	  CB_BLUE;
+	  printf("%s", "^ ");
+	  C_RESET;
 	}
-	printf("\n");
+	C_YELLOW;
+	printf("  %lu\n", step+1);
+	C_RESET;
       }
       break;
     }
@@ -66,7 +79,7 @@ int main(int argc, char** argv) {
   }
 
   // print summary
-  printf("\n");
+  if (illustrate) printf("\n");
   printf("[");
   for (i = 0; i < clen; i++) {
     printf("%d", cycle[i]);

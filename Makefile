@@ -1,6 +1,13 @@
+CC = gcc
+CFLAGS = -g -Wall
+TARGET = phase
 
-all: phase.c
-	gcc -g -Wall -o phase phase.c
+all: $(TARGET)
+
+$(TARGET): $(TARGET).c
+	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c
 
 clean:
-	$(RM) phase
+	$(RM) $(TARGET)
+	$(RM) *~
+	$(RM) -r *.dSYM
