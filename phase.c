@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
   int illustrate = 0;
   int i, tmp, checksum;
   unsigned long step = 1;
+  char symbol = '^';
 
   cycle = malloc(sizeof(int) * argc);
   
@@ -49,7 +50,7 @@ int main(int argc, char** argv) {
       if (illustrate) {
 	if (i == 0) putchar(' ');
 	CB_BLUE;
-	printf("%s", (((step % cycle[i]) == 1 || cycle[i] == 1) ? "^ " : "  "));
+	printf("%c ", (((step % cycle[i]) == 1 || cycle[i] == 1) ? symbol : ' '));
 	C_RESET;
       }
     }
@@ -62,11 +63,11 @@ int main(int argc, char** argv) {
     // If it adds to 0, the cycles are back in phase, and we have a result 
     if (checksum == 0) {      
       if (illustrate) {
-	// extra step for illustration purposes, showing align
+	// extra step for illustration purposes, showing alignment
 	for (i = 0; i < clen; i++) {
 	  if (i == 0) putchar(' ');
 	  CB_BLUE;
-	  printf("%s", "^ ");
+	  printf("%c ", symbol);
 	  C_RESET;
 	}
 	C_YELLOW;
