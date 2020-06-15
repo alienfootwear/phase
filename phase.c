@@ -5,9 +5,10 @@
 int main(int argc, char** argv) {
   int* cycle;
   int clen = 0;
-  int step = 1;
   int illustrate = 0;
-  int i, tmp, checksum, mult;
+  int i, tmp, checksum;
+  int pad = 5;
+  unsigned long step = 1;
 
   cycle = malloc(sizeof(int) * argc);
   
@@ -37,7 +38,7 @@ int main(int argc, char** argv) {
   while (1) {
     checksum = 0;
     if (illustrate) {
-      printf("%05d ", step); //TBD: figure out padding
+      printf("%0*lu ", pad, step); //TBD: dynamic padding
     }
     for (i = 0; i < clen; i++) {
       checksum += ((step % cycle[i]));
@@ -53,7 +54,7 @@ int main(int argc, char** argv) {
     if (checksum == 0) {      
       if (illustrate) {
 	// extra step for illustration purposes, showing align
-	printf("%05d ", step+1); //TBD: figure out padding
+	printf("%0*lu ", pad, step+1); //TBD: dynamic padding
 	for (i = 0; i < clen; i++) {
 	  printf("%s", ". ");
 	}
@@ -72,20 +73,7 @@ int main(int argc, char** argv) {
     if ((i+1) < clen) 
       printf(",");
   }
-  printf("] : %d steps until all phases re-align\n", step);
-
-  // print multiplication of cycle lengths
-  mult = cycle[0];
-  printf("%d ", cycle[0]);
-  if ((clen - 1) != 0)
-      printf("x ");
-  for (i = 1; i < clen; i++) {
-    mult *= cycle[i];
-    printf("%d ", cycle[i]);
-    if ((clen - 1) != i)
-      printf("x ");
-  }
-  printf("== %d\n\n", mult);
+  printf("] : %lu steps until all phases re-align\n", step);
 
   free(cycle);
   return 0;
